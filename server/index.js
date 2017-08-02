@@ -20,7 +20,7 @@ module.exports = app
  * keys as environment variables, so that they can still be read by the
  * Node process on process.env
  */
-if (process.env.NODE_ENV !== 'production') require('../secrets')
+if (process.env.NODE_ENV !== 'production') require('../secrets') ()
 
 // passport registration
 passport.serializeUser((user, done) => done(null, user.id))
@@ -52,6 +52,7 @@ const createApp = () => {
   app.use('/api', require('./api'))
 
   // static file-serving middleware
+  app.use('/bootstrap', express.static(path.join(__dirname, '..', '/node_modules/bootstrap/dist')));
   app.use(express.static(path.join(__dirname, '..', 'public')))
 
   // sends index.html
