@@ -1,9 +1,13 @@
 const router = require('express').Router()
-const User = require('../db/models/user')
+const User = require('../db/models/User')
+const Truck = require('../db/models/Truck')
 module.exports = router
 
-router.post('/login', (req, res, next) => {
-  User.findOne({where: {email: req.body.email}})
+router.post('/login/:type', (req, res, next) => {
+  const type = req.params.type;
+  const table = type === 'user' ? User : Truck;
+  console.log(type, 'table', table)
+  table.findOne({where: {email: req.body.email}})
     .then(user => {
       if (!user) {
         res.status(401).send('User not found')
@@ -17,7 +21,9 @@ router.post('/login', (req, res, next) => {
 })
 
 router.post('/signup', (req, res, next) => {
-  User.create(req.body)
+  const type = req.body.type;
+  const Model = type === 'user' ? User : Truck;
+  Model.create(req.body)
     .then(user => {
       req.login(user, err => err ? next(err) : res.json(user))
     })

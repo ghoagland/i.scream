@@ -12,6 +12,9 @@ const Truck = db.define('truck', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  name: {
+    type: Sequelize.STRING
+  },
   salt: {
     type: Sequelize.STRING
   },
@@ -24,6 +27,7 @@ const Truck = db.define('truck', {
   lng: {
     type: Sequelize.DECIMAL(10, 5)
   }
+
 
 })
 

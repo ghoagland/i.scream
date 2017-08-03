@@ -13,7 +13,8 @@
     "start": "node server",
     "start-dev": "npm run build-client-watch & npm run start-server",
     "start-server": "NODE_ENV='development' nodemon server -e html,js,scss --ignore public",
-    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/i.scream' mocha ./**/*.spec.js --compilers js:babel-register"
+    "test": "NODE_ENV='test' DATABASE_URL='postgres://localhost:5432/i.scream' mocha ./**/*.spec.js --compilers js:babel-register",
+    "seed": "node ./seed"
   },
   "author": "",
   "license": "ISC",
@@ -50,6 +51,7 @@
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
+    "bluebird": "^3.5.0",
     "chai": "^3.5.0",
     "css-loader": "^0.26.1",
     "enzyme": "^2.8.2",
