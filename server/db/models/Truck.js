@@ -9,7 +9,7 @@ const Truck = db.define('truck', {
     allowNull: false
   },
   password: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
     allowNull: false
   },
   salt: {
