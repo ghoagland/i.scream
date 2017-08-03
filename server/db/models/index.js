@@ -13,5 +13,6 @@ RouteStop.belongsTo(Stop, {as: 'next'});
 module.exports = {
   User,
   Truck,
-  Stop
+  Stop,
+  RouteStop
 }
