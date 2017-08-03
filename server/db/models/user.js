@@ -12,13 +12,13 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  name: {
+    type: Sequelize.STRING
+  },
   salt: {
     type: Sequelize.STRING
   },
   googleId: {
-    type: Sequelize.STRING
-  },
-  name: {
     type: Sequelize.STRING
   },
   lat: {
