@@ -4,14 +4,9 @@ const db = require('../db');
 //join table with currentId and nextId from Stop model
 const RouteStop = db.define('routeStop', {
   status: {
-    type: Sequelize.ENUM('visited', 'active', 'next', 'planned', 'deactivated'),
-    allowNull: false
-  },
-  leavingTime: {
-    type: Sequelize.DATE,
+    type: Sequelize.ENUM('left', 'active', 'next', 'planned', 'deactivated'),
     allowNull: false
   }
-
 })
 
 module.exports = RouteStop;

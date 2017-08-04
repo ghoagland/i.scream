@@ -21,14 +21,15 @@ const Truck = db.define('truck', {
   googleId: {
     type: Sequelize.STRING
   },
+  departureTime: {
+    type: Sequelize.DATE,
+  },
   lat: {
     type: Sequelize.DECIMAL(10, 5)
   },
   lng: {
     type: Sequelize.DECIMAL(10, 5)
   }
-
-
 })
 
 module.exports = Truck
