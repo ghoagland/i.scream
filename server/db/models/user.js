@@ -26,6 +26,10 @@ const User = db.define('user', {
   },
   lng: {
     type: Sequelize.DECIMAL(10, 5)
+  },
+  type: {
+    type: Sequelize.ENUM('user', 'truck'),
+    defaultValue: 'user'
   }
 })
 

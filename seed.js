@@ -85,20 +85,10 @@ const users = [
   }
 ];
 
-const trucks = [
-  {
-    name: 'BestCones',
-    email: 'cones@cones.com',
-    password: 'itsaboutthecones',
-    salt: 'saltiestsalt',
-    googleId: '1234'
-  }
-]
 
 
 
 db.sync({ force: true })
 .then(() => Promise.all(users.map(user => User.create(user))))
-.then(() => Promise.all(trucks.map(truck => Truck.create(truck))))
 .then(() => console.log('Finished seeding!'))
 .catch(err => console.error('There was a problem seeding.', err, err.stack));

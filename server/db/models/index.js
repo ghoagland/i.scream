@@ -1,22 +1,22 @@
 const User = require('./User');
-const Truck = require('./Truck');
+const TruckInfo = require('./TruckInfo');
 const Stop = require('./Stop');
 const RouteStop = require('./RouteStop');
 const Route = require('./Route');
 
 
-Stop.belongsTo(Truck);
+Stop.belongsTo(User);
 
 RouteStop.belongsTo(Stop, {as: 'current'});
 RouteStop.belongsTo(Stop, {as: 'next'});
 
-Truck.belongsToMany(RouteStop, { through: 'route' })
-RouteStop.belongsToMany(Truck, { through: 'route' })
+User.belongsToMany(RouteStop, { through: 'route' })
+RouteStop.belongsToMany(User, { through: 'route' })
 
 
 module.exports = {
   User,
-  Truck,
+  TruckInfo,
   Stop,
   RouteStop
 }
