@@ -23,6 +23,12 @@ const Truck = db.define('truck', {
   },
   departureTime: {
     type: Sequelize.DATE,
+  },
+  lat: {
+    type: Sequelize.DECIMAL(10, 5)
+  },
+  lng: {
+    type: Sequelize.DECIMAL(10, 5)
   }
 })
 
