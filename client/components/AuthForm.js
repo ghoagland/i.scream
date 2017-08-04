@@ -10,10 +10,14 @@ class AuthForm extends Component {
   constructor() {
     super()
     this.handleOptionChange = this.handleOptionChange.bind(this)
+    this.state = {
+      selectedType: 'user'
+    }
   }
 
   render () {
-    const {name, displayName, handleSubmit, error, selectedType} = this.props
+    const {name, displayName, handleSubmit, error } = this.props
+    const { selectedType } = this.state;
       return (
        <div>
         <form onSubmit={handleSubmit} name={name}>
@@ -55,7 +59,6 @@ class AuthForm extends Component {
 
   handleOptionChange (evt) {
     evt.preventDefault();
-    console.log(evt.target.value)
     this.setState({selectedType: evt.target.value});
   }
 }
@@ -79,8 +82,7 @@ const mapSignup = (state) => {
   return {
     name: 'signup',
     displayName: 'Sign Up',
-    error: state.user.error,
-    selectedType: 'user'
+    error: state.user.error
   }
 }
 
