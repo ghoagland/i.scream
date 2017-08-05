@@ -7,12 +7,14 @@ import {
   withGoogleMap,
   GoogleMap,
   DirectionsRenderer,
+  SearchBox
 } from "react-google-maps";
 
 const DirectionsExampleGoogleMap = withGoogleMap(props => (
   <GoogleMap
     defaultZoom={5}
     defaultCenter={props.center}
+    marker
   >
     {props.directions && <DirectionsRenderer directions={props.directions} />}
   </GoogleMap>

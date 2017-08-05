@@ -2,19 +2,16 @@
 /* global google */
 
 import canUseDOM from "can-use-dom";
-
 import raf from "raf";
-
-import {
-  default as React,
-  Component,
-} from "react";
+import React, { Component } from "react";
+import { connect } from 'react-redux'
 
 import {
   withGoogleMap,
   GoogleMap,
   Circle,
   InfoWindow,
+  Marker,
 } from 'react-google-maps';
 
 const geolocation = (
@@ -27,48 +24,33 @@ const geolocation = (
   })
 );
 
-const GeolocationExampleGoogleMap = withGoogleMap(props => (
+const GeolocationGoogleMap = withGoogleMap(props => (
   <GoogleMap
     defaultZoom={12}
     center={props.center}
   >
     {props.center && (
-      <InfoWindow position={props.center}>
-        <div>{props.content}</div>
-      </InfoWindow>
-    )}
-    {props.center && (
-      <Circle
-        center={props.center}
-        radius={props.radius}
-        options={{
-          fillColor: `blue`,
-          fillOpacity: 0.20,
-          strokeColor: `blue`,
-          strokeOpacity: 1,
-          strokeWeight: 1,
-        }}
-      />
+      <Marker position={props.center}>
+      </Marker>
     )}
   </GoogleMap>
 ));
 
-/*
- * https://developers.google.com/maps/documentation/javascript/examples/map-geolocation
- *
- * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
- */
-export default class GeolocationExample extends Component {
+class GeolocationMap extends Component {
 
-  state = {
-    center: null,
-    content: null,
-    radius: 6000,
-  };
+  constructor () {
+    super()
+    this.state = {
+      center: null,
+      content: null,
+      radius: 500,
+    };
+  }
 
   isUnmounted = false;
 
   componentDidMount() {
+    const cone = '/cone.png'
     const tick = () => {
       if (this.isUnmounted) {
         return;
@@ -87,8 +69,7 @@ export default class GeolocationExample extends Component {
         center: {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-        },
-        content: `Location found using HTML5.`,
+        }
       });
 
       raf(tick);
@@ -112,7 +93,7 @@ export default class GeolocationExample extends Component {
 
   render() {
     return (
-      <GeolocationExampleGoogleMap
+      <GeolocationGoogleMap
         containerElement={
           <div style={{ height: `100%` }} />
         }
@@ -126,3 +107,7 @@ export default class GeolocationExample extends Component {
     );
   }
 }
+
+
+export default GeolocationMap
+

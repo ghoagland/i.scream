@@ -11,14 +11,20 @@ const users = [
     email: 'bwaffle@waffle.com',
     password: 'bobspw',
     salt: 'sosalty',
-    googleId: '1234'
+    googleId: '1234',
+    type: 'truck',
+    lat: 40.706348,
+    lng: -74.012336
   },
   {
     name: 'Sally Pancake',
     email: 'spancake@pancake.com',
     password: 'sallyspw',
     salt: 'saltyyyy',
-    googleId: '5678'
+    googleId: '5678',
+    type: 'truck',
+    lat: 40.708096,
+    lng: -74.009880
   },
   {
     name: 'Pierre Croissant',
