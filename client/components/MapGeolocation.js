@@ -5,6 +5,7 @@ import canUseDOM from "can-use-dom";
 import raf from "raf";
 import React, { Component } from "react";
 import { connect } from 'react-redux'
+import { fetchTrucks } from '../store'
 
 import {
   withGoogleMap,
@@ -26,13 +27,21 @@ const geolocation = (
 
 const GeolocationGoogleMap = withGoogleMap(props => (
   <GoogleMap
-    defaultZoom={12}
+    defaultZoom={14}
     center={props.center}
   >
     {props.center && (
       <Marker position={props.center}>
       </Marker>
     )}
+    {props.trucks && props.trucks.map(elem => {
+      return (<Marker
+              key={elem.id}
+              position={{lat: +elem.lat, lng: +elem.lng}}
+              icon='/cone.png'
+              >
+      </Marker>)})
+    }
   </GoogleMap>
 ));
 
@@ -50,6 +59,7 @@ class GeolocationMap extends Component {
   isUnmounted = false;
 
   componentDidMount() {
+    this.props.loadTrucks()
     const cone = '/cone.png'
     const tick = () => {
       if (this.isUnmounted) {
@@ -72,7 +82,7 @@ class GeolocationMap extends Component {
         }
       });
 
-      raf(tick);
+      //raf(tick);
     }, (reason) => {
       if (this.isUnmounted) {
         return;
@@ -92,6 +102,7 @@ class GeolocationMap extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <GeolocationGoogleMap
         containerElement={
@@ -103,11 +114,29 @@ class GeolocationMap extends Component {
         center={this.state.center}
         content={this.state.content}
         radius={this.state.radius}
+        trucks={this.props.trucks}
       />
     );
   }
 }
 
+const mapState = state => {
+  return {
+    lat: state.user.lat,
+    lng: state.user.lng,
+    trucks: state.truck
+  }
+}
 
-export default GeolocationMap
+const mapDispatch = dispatch => {
+  return {
+    geolocated () {
 
+    },
+    loadTrucks () {
+      dispatch(fetchTrucks())
+    }
+  }
+}
+
+export default connect(mapState, mapDispatch)(GeolocationMap)

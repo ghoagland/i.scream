@@ -12,9 +12,7 @@ const users = [
     password: 'bobspw',
     salt: 'sosalty',
     googleId: '1234',
-    type: 'truck',
-    lat: 40.706348,
-    lng: -74.012336
+
   },
   {
     name: 'Sally Pancake',
@@ -31,14 +29,20 @@ const users = [
     email: 'pcroissant@croissant.com',
     password: 'pierrespw',
     salt: 'saltttt',
-    googleId: '91011'
+    googleId: '91011',
+    type: 'truck',
+    lat: 40.706348,
+    lng: -74.012336
   },
   {
     name: 'Terri Toast',
     email: 'ttoast@toast.com',
     password: 'terrispw',
     salt: 'ilikesalt',
-    googleId: '1213'
+    googleId: '1213',
+    type: 'truck',
+    lat: 40.773486,
+    lng: -73.945849
   },
   {
     name: 'Abner Crumpet',
