@@ -94,7 +94,7 @@ class GeolocationMap extends Component {
     return (
       <GeolocationGoogleMap
         containerElement={
-          <div style={{ height: `100%` }} />
+          <div id="map-container-div"style={{ height: `100%` }} />
         }
         mapElement={
           <div style={{ height: `100%` }} />
