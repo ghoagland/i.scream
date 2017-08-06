@@ -6,5 +6,5 @@
 export {default as Main} from './Main'
 export {default as UserHome} from './UserHome'
 export {default as MapContainer} from './MapContainer'
-
+export {default as Landing} from './Landing'
 export {Login, Signup} from './AuthForm'

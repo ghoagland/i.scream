@@ -3,7 +3,7 @@ import MapPage from './MapGeoLocation';
 
 function MapContainer () {
   return (
-    <div style={{height: '500px'}}>
+    <div id="map-container">
       <MapPage />
     </div>
     )
