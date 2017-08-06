@@ -5,7 +5,7 @@ import canUseDOM from "can-use-dom";
 import raf from "raf";
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import { fetchTrucks } from '../store'
+import { fetchTrucks, getSortedTrucks } from '../store'
 
 import {
   withGoogleMap,
@@ -52,25 +52,14 @@ class GeolocationMap extends Component {
     this.state = {
       center: null,
       content: null,
-      radius: 500,
+      radius: 500
     };
   }
 
   isUnmounted = false;
 
   componentDidMount() {
-    this.props.loadTrucks()
-    const cone = '/cone.png'
-    const tick = () => {
-      if (this.isUnmounted) {
-        return;
-      }
-      this.setState({ radius: Math.max(this.state.radius - 20, 0) });
-
-      if (this.state.radius > 200) {
-        raf(tick);
-      }
-    };
+    this.props.loadTrucks(this.state.center)
     geolocation.getCurrentPosition((position) => {
       if (this.isUnmounted) {
         return;
@@ -81,8 +70,7 @@ class GeolocationMap extends Component {
           lng: position.coords.longitude,
         }
       });
-
-      //raf(tick);
+      this.props.sortTrucks(this.props.trucks, this.state.center)
     }, (reason) => {
       if (this.isUnmounted) {
         return;
@@ -102,7 +90,6 @@ class GeolocationMap extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <GeolocationGoogleMap
         containerElement={
@@ -122,19 +109,19 @@ class GeolocationMap extends Component {
 
 const mapState = state => {
   return {
-    lat: state.user.lat,
     lng: state.user.lng,
-    trucks: state.truck
+    lat: state.user.lat,
+    trucks: state.trucks
   }
 }
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch, ownProps) => {
   return {
-    geolocated () {
-
+    loadTrucks (center) {
+      dispatch(fetchTrucks(center))
     },
-    loadTrucks () {
-      dispatch(fetchTrucks())
+    sortTrucks (trucks, center) {
+      dispatch(getSortedTrucks(trucks, center))
     }
   }
 }

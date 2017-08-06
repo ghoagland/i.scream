@@ -49,14 +49,20 @@ const users = [
     email: 'acrumpet@crumpet.com',
     password: 'abnerspw',
     salt: 'saltsalt',
-    googleId: '1415'
+    googleId: '1415',
+    type: 'truck',
+    lat: 40.779309,
+    lng: -73.955347
   },
   {
     name: 'Minnie Muffin',
     email: 'mmuffin@muffin.com',
     password: 'minniespw',
     salt: 'salt123',
-    googleId: '1617'
+    googleId: '1617',
+    type: 'truck',
+    lat: 40.771358,
+    lng: -73.950483
   },
   {
     name: 'Derek Doughnut',
