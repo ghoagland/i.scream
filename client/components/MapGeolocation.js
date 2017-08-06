@@ -5,7 +5,7 @@ import canUseDOM from "can-use-dom";
 import raf from "raf";
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import { fetchTrucks, getSortedTrucks } from '../store'
+import { fetchTrucks, getSortedTrucks, putUser } from '../store'
 
 import {
   withGoogleMap,
@@ -49,14 +49,13 @@ class GeolocationMap extends Component {
 
   constructor () {
     super()
+    this.isUnmounted = false;
     this.state = {
       center: null,
       content: null,
       radius: 500
     };
-  }
-
-  isUnmounted = false;
+  };
 
   componentDidMount() {
     this.props.loadTrucks(this.state.center)
@@ -71,6 +70,8 @@ class GeolocationMap extends Component {
         }
       });
       this.props.sortTrucks(this.props.trucks, this.state.center)
+      this.props.persistLocation(this.props.user, this.state.center)
+
     }, (reason) => {
       if (this.isUnmounted) {
         return;
@@ -111,7 +112,8 @@ const mapState = state => {
   return {
     lng: state.user.lng,
     lat: state.user.lat,
-    trucks: state.trucks
+    trucks: state.trucks,
+    user: state.user
   }
 }
 
@@ -122,6 +124,13 @@ const mapDispatch = (dispatch, ownProps) => {
     },
     sortTrucks (trucks, center) {
       dispatch(getSortedTrucks(trucks, center))
+    },
+    persistLocation (user, location) {
+      dispatch(putUser({
+        ...user,
+        lat: location.lat,
+        lng: location.lng
+      }))
     }
   }
 }
