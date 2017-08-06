@@ -11,42 +11,58 @@ const users = [
     email: 'bwaffle@waffle.com',
     password: 'bobspw',
     salt: 'sosalty',
-    googleId: '1234'
+    googleId: '1234',
+
   },
   {
     name: 'Sally Pancake',
     email: 'spancake@pancake.com',
     password: 'sallyspw',
     salt: 'saltyyyy',
-    googleId: '5678'
+    googleId: '5678',
+    type: 'truck',
+    lat: 40.708096,
+    lng: -74.009880
   },
   {
     name: 'Pierre Croissant',
     email: 'pcroissant@croissant.com',
     password: 'pierrespw',
     salt: 'saltttt',
-    googleId: '91011'
+    googleId: '91011',
+    type: 'truck',
+    lat: 40.706348,
+    lng: -74.012336
   },
   {
     name: 'Terri Toast',
     email: 'ttoast@toast.com',
     password: 'terrispw',
     salt: 'ilikesalt',
-    googleId: '1213'
+    googleId: '1213',
+    type: 'truck',
+    lat: 40.773486,
+    lng: -73.945849
   },
   {
     name: 'Abner Crumpet',
     email: 'acrumpet@crumpet.com',
     password: 'abnerspw',
     salt: 'saltsalt',
-    googleId: '1415'
+    googleId: '1415',
+    type: 'truck',
+    lat: 40.779309,
+    lng: -73.955347
   },
   {
     name: 'Minnie Muffin',
     email: 'mmuffin@muffin.com',
     password: 'minniespw',
     salt: 'salt123',
-    googleId: '1617'
+    googleId: '1617',
+    type: 'truck',
+    lat: 40.771358,
+    lng: -73.950483
   },
   {
     name: 'Derek Doughnut',
@@ -85,20 +101,10 @@ const users = [
   }
 ];
 
-const trucks = [
-  {
-    name: 'BestCones',
-    email: 'cones@cones.com',
-    password: 'itsaboutthecones',
-    salt: 'saltiestsalt',
-    googleId: '1234'
-  }
-]
 
 
 
 db.sync({ force: true })
 .then(() => Promise.all(users.map(user => User.create(user))))
-.then(() => Promise.all(trucks.map(truck => Truck.create(truck))))
 .then(() => console.log('Finished seeding!'))
 .catch(err => console.error('There was a problem seeding.', err, err.stack));

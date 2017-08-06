@@ -21,7 +21,7 @@ class AuthForm extends Component {
       return (
        <div>
         <form onSubmit={handleSubmit} name={name}>
-        {
+        {/*
           name === 'signup'
           &&
             <div>
@@ -38,7 +38,7 @@ class AuthForm extends Component {
               <label htmlFor='name'><small>Name</small></label>
               <input name='name' type='text' />
             </div>
-        }
+        */}
           <div>
             <label htmlFor='email'><small>Email</small></label>
             <input name='email' type='text' />
