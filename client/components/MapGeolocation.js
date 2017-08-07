@@ -25,25 +25,44 @@ const geolocation = (
   })
 );
 
-const GeolocationGoogleMap = withGoogleMap(props => (
-  <GoogleMap
-    defaultZoom={14}
-    center={props.center}
-  >
-    {props.center && (
-      <Marker position={props.center}>
-      </Marker>
-    )}
-    {props.trucks && props.trucks.map(elem => {
-      return (<Marker
-              key={elem.id}
-              position={{lat: +elem.lat, lng: +elem.lng}}
-              icon='/cone.png'
-              >
-      </Marker>)})
-    }
-  </GoogleMap>
-));
+const GeolocationGoogleMap = withGoogleMap(props => {
+  props.trucks.forEach(elem => {
+    elem.showInfo = false;
+  })
+  return (
+    <GoogleMap
+      defaultZoom={14}
+      center={props.center}
+    >
+      {props.center && (
+        <Marker position={props.center}>
+        </Marker>
+      )}
+      {props.trucks && props.trucks.map(marker => {
+        console.log(marker.showInfo)
+        return (
+          <Marker
+            key={marker.id}
+            position={{lat: +marker.lat, lng: +marker.lng}}
+            icon='/cone.png'
+            onClick={() => props.onMarkerClick(marker)}
+          >
+            {marker.showInfo && (
+              <InfoWindow onCloseClick={() => props.onMarkerClose(marker)}>
+                <div className="marker-info">
+                  <p>hello</p>
+                  {/*<h1>{marker.name}</h1>
+                                    <p>{marker.routeStops.status}</p>
+                                    <p>{marker.routeStops.departureTime}</p>*/}
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
+        )
+      })}
+    </GoogleMap>
+)
+});
 
 class GeolocationMap extends Component {
 
@@ -53,8 +72,11 @@ class GeolocationMap extends Component {
     this.state = {
       center: null,
       content: null,
-      radius: 500
+      trucks: []
     };
+
+    this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleMarkerClose = this.handleMarkerClose.bind(this);
   };
 
   componentDidMount() {
@@ -69,7 +91,8 @@ class GeolocationMap extends Component {
           lng: position.coords.longitude,
         }
       });
-      this.props.sortTrucks(this.props.trucks, this.state.center)
+      this.props.sortTrucks(this.props.trucks, this.state.center);
+      this.setState({trucks: this.props.trucks})
       this.props.persistLocation(this.props.user, this.state.center)
 
     }, (reason) => {
@@ -91,6 +114,7 @@ class GeolocationMap extends Component {
   }
 
   render() {
+    console.log('rerender')
     return (
       <GeolocationGoogleMap
         containerElement={
@@ -101,10 +125,40 @@ class GeolocationMap extends Component {
         }
         center={this.state.center}
         content={this.state.content}
-        radius={this.state.radius}
-        trucks={this.props.trucks}
+        trucks={this.state.trucks}
+        onMarkerClick={this.handleMarkerClick}
+        onMarkerClose={this.handleMarkerClose}
       />
     );
+  }
+
+  handleMarkerClick(targetMarker) {
+    console.log('click')
+    this.setState({
+      trucks: this.state.trucks.map(truck => {
+        if (+truck.id === +targetMarker.id) {
+          return {
+            ...truck,
+            showInfo: true
+          };
+        }
+        return truck;
+      }),
+    });
+  }
+
+  handleMarkerClose(targetMarker) {
+    this.setState({
+      trucks: this.state.trucks.map(truck => {
+        if (truck === targetMarker) {
+          return {
+            ...truck,
+            showInfo: false,
+          };
+        }
+        return truck;
+      }),
+    });
   }
 }
 
