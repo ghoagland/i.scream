@@ -2,6 +2,16 @@ const router = require('express').Router()
 const { User } = require('../db/models')
 module.exports = router
 
+router.get('/:userId', (req, res, next) => {
+  console.log(req.params)
+  User.findById(+req.params.userId)
+    .then(user => {
+      if (user.type === 'truck') res.json(user);
+      else res.sendStatus(401);
+    })
+    .catch(next)
+})
+
 router.get('/', (req, res, next) => {
   User.findAll({
     // explicitly select only the id and email fields - even though
@@ -12,6 +22,7 @@ router.get('/', (req, res, next) => {
     .then(users => res.json(users))
     .catch(next)
 })
+
 
 router.put('/', (req, res, next) => {
   User.findById(+req.body.user.id)

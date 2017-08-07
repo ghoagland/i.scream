@@ -38,7 +38,7 @@ export const auth = (email, password, method) =>
     axios.post(`/auth/${method}`, { email, password })
       .then(res => {
         dispatch(getUser(res.data))
-        history.push('/home')
+        history.push('/map')
       })
       .catch(error =>
         dispatch(getUser({error})))
@@ -54,7 +54,7 @@ export const logout = () =>
 
 export const putUser = updatedUser =>
   dispatch => {
-    console.log(updatedUser)
+
     axios.put('/api/users', {user: updatedUser})
       .then(res => dispatch(updateUser(res.data)))
       .catch(err => console.log(err))

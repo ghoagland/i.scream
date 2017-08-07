@@ -5,7 +5,8 @@ import canUseDOM from "can-use-dom";
 import raf from "raf";
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import { fetchTrucks, getSortedTrucks, putUser } from '../store'
+import { fetchTrucks, getSortedTrucks, putUser, fetchTruck } from '../store'
+import { Link } from 'react-router-dom'
 
 import {
   withGoogleMap,
@@ -25,25 +26,44 @@ const geolocation = (
   })
 );
 
-const GeolocationGoogleMap = withGoogleMap(props => (
-  <GoogleMap
-    defaultZoom={14}
-    center={props.center}
-  >
-    {props.center && (
-      <Marker position={props.center}>
-      </Marker>
-    )}
-    {props.trucks && props.trucks.map(elem => {
-      return (<Marker
-              key={elem.id}
-              position={{lat: +elem.lat, lng: +elem.lng}}
-              icon='/cone.png'
-              >
-      </Marker>)})
-    }
-  </GoogleMap>
-));
+const GeolocationGoogleMap = withGoogleMap(props => {
+  return (
+    <GoogleMap
+      defaultZoom={16}
+      center={props.center}
+    >
+      {props.center && (
+        <Marker position={props.center}>
+        </Marker>
+      )}
+      {props.trucks && props.trucks.map(marker => {
+        return (
+          <Marker
+            key={marker.id}
+            position={{lat: +marker.lat, lng: +marker.lng}}
+            icon='/cone.png'
+            onClick={() => props.onMarkerClick(marker)}
+          >
+            {marker.showInfo && (
+              <InfoWindow onCloseClick={() => props.onMarkerClose(marker)}>
+                <div className="marker-info">
+                  <p>{marker.name}</p>
+                  <p>{marker.routeStops.status}</p>
+                  <p>{marker.routeStops.departureTime}</p>
+                  <Link
+                    to={`/directions/${marker.id}`}
+                  >
+                  Get directions
+                  </Link>
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
+        )
+      })}
+    </GoogleMap>
+)
+});
 
 class GeolocationMap extends Component {
 
@@ -53,8 +73,11 @@ class GeolocationMap extends Component {
     this.state = {
       center: null,
       content: null,
-      radius: 500
+      trucks: []
     };
+
+    this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleMarkerClose = this.handleMarkerClose.bind(this);
   };
 
   componentDidMount() {
@@ -69,7 +92,8 @@ class GeolocationMap extends Component {
           lng: position.coords.longitude,
         }
       });
-      this.props.sortTrucks(this.props.trucks, this.state.center)
+      this.props.sortTrucks(this.props.trucks, this.state.center);
+      this.setState({trucks: this.props.trucks})
       this.props.persistLocation(this.props.user, this.state.center)
 
     }, (reason) => {
@@ -101,10 +125,41 @@ class GeolocationMap extends Component {
         }
         center={this.state.center}
         content={this.state.content}
-        radius={this.state.radius}
-        trucks={this.props.trucks}
+        trucks={this.state.trucks}
+        onMarkerClick={this.handleMarkerClick}
+        onMarkerClose={this.handleMarkerClose}
+        setCurrentTruck={this.props.fetchTruck}
       />
     );
+  }
+
+  handleMarkerClick(targetMarker) {
+    this.props.setCurrentTruck(targetMarker.id)
+    this.setState({
+      trucks: this.state.trucks.map(truck => {
+        if (+truck.id === +targetMarker.id) {
+          return {
+            ...truck,
+            showInfo: true
+          };
+        }
+        return truck;
+      }),
+    });
+  }
+
+  handleMarkerClose(targetMarker) {
+    this.setState({
+      trucks: this.state.trucks.map(truck => {
+        if (truck === targetMarker) {
+          return {
+            ...truck,
+            showInfo: false,
+          };
+        }
+        return truck;
+      }),
+    });
   }
 }
 
@@ -113,7 +168,8 @@ const mapState = state => {
     lng: state.user.lng,
     lat: state.user.lat,
     trucks: state.trucks,
-    user: state.user
+    user: state.user,
+    currentTruck: state.currentTruck
   }
 }
 
@@ -131,7 +187,11 @@ const mapDispatch = (dispatch, ownProps) => {
         lat: location.lat,
         lng: location.lng
       }))
+    },
+    setCurrentTruck (id) {
+      dispatch(fetchTruck(id));
     }
+
   }
 }
 

@@ -6,6 +6,10 @@ const RouteStop = db.define('routeStop', {
   status: {
     type: Sequelize.ENUM('left', 'active', 'next', 'planned', 'deactivated'),
     allowNull: false
+  },
+  departureTime: {
+    type: Sequelize.DATE,
+    allowNull: false
   }
 })
 

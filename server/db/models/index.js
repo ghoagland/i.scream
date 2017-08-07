@@ -13,10 +13,14 @@ RouteStop.belongsTo(Stop, {as: 'next'});
 User.belongsToMany(RouteStop, { through: 'route' })
 RouteStop.belongsToMany(User, { through: 'route' })
 
+TruckInfo.belongsTo(User);
+User.hasOne(TruckInfo);
+
 
 module.exports = {
   User,
   TruckInfo,
   Stop,
-  RouteStop
+  RouteStop,
+  Route
 }
