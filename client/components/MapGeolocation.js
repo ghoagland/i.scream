@@ -5,7 +5,8 @@ import canUseDOM from "can-use-dom";
 import raf from "raf";
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import { fetchTrucks, getSortedTrucks, putUser } from '../store'
+import { fetchTrucks, getSortedTrucks, putUser, fetchTruck } from '../store'
+import { Link } from 'react-router-dom'
 
 import {
   withGoogleMap,
@@ -26,9 +27,6 @@ const geolocation = (
 );
 
 const GeolocationGoogleMap = withGoogleMap(props => {
-  props.trucks.forEach(elem => {
-    elem.showInfo = false;
-  })
   return (
     <GoogleMap
       defaultZoom={14}
@@ -39,7 +37,6 @@ const GeolocationGoogleMap = withGoogleMap(props => {
         </Marker>
       )}
       {props.trucks && props.trucks.map(marker => {
-        console.log(marker.showInfo)
         return (
           <Marker
             key={marker.id}
@@ -50,10 +47,15 @@ const GeolocationGoogleMap = withGoogleMap(props => {
             {marker.showInfo && (
               <InfoWindow onCloseClick={() => props.onMarkerClose(marker)}>
                 <div className="marker-info">
-                  <p>hello</p>
-                  {/*<h1>{marker.name}</h1>
-                                    <p>{marker.routeStops.status}</p>
-                                    <p>{marker.routeStops.departureTime}</p>*/}
+                  <p>{marker.name}</p>
+                  <p>{marker.routeStops.status}</p>
+                  <p>{marker.routeStops.departureTime}</p>
+                  <Link
+                    to={`/directions/${marker.id}`}
+                    onClick={() => setCurrentTruck(marker.id)}
+                  >
+                  Get directions
+                  </Link>
                 </div>
               </InfoWindow>
             )}
@@ -114,7 +116,6 @@ class GeolocationMap extends Component {
   }
 
   render() {
-    console.log('rerender')
     return (
       <GeolocationGoogleMap
         containerElement={
@@ -128,12 +129,12 @@ class GeolocationMap extends Component {
         trucks={this.state.trucks}
         onMarkerClick={this.handleMarkerClick}
         onMarkerClose={this.handleMarkerClose}
+        setCurrentTruck={this.props.fetchTruck}
       />
     );
   }
 
   handleMarkerClick(targetMarker) {
-    console.log('click')
     this.setState({
       trucks: this.state.trucks.map(truck => {
         if (+truck.id === +targetMarker.id) {
@@ -185,7 +186,11 @@ const mapDispatch = (dispatch, ownProps) => {
         lat: location.lat,
         lng: location.lng
       }))
+    },
+    setCurrentTruck (id) {
+      dispatch(fetchTruck(id));
     }
+
   }
 }
 

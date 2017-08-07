@@ -13,6 +13,16 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+router.get('/:userId', (req, res, next) => {
+  console.log(req.params)
+  User.findById(+req.params.userId)
+    .then(user => {
+      if (user.type === 'truck') res.json(user);
+      else res.sendStatus(401);
+    })
+    .catch(next)
+})
+
 router.put('/', (req, res, next) => {
   User.findById(+req.body.user.id)
     .then(user => user.update(req.body.user))

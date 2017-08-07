@@ -54,7 +54,7 @@ export const logout = () =>
 
 export const putUser = updatedUser =>
   dispatch => {
-    console.log(updatedUser)
+
     axios.put('/api/users', {user: updatedUser})
       .then(res => dispatch(updateUser(res.data)))
       .catch(err => console.log(err))
