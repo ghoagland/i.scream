@@ -14,6 +14,7 @@ export const fetchTruck = (id) =>
   dispatch =>
     axios.get(`/api/users/${id}`)
     .then(res => {
+      console.log(res.data)
       dispatch(getCurrentTruck(res.data))
     })
     .catch(err => console.log(err))

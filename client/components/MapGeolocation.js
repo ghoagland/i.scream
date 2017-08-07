@@ -29,7 +29,7 @@ const geolocation = (
 const GeolocationGoogleMap = withGoogleMap(props => {
   return (
     <GoogleMap
-      defaultZoom={14}
+      defaultZoom={16}
       center={props.center}
     >
       {props.center && (
@@ -52,7 +52,6 @@ const GeolocationGoogleMap = withGoogleMap(props => {
                   <p>{marker.routeStops.departureTime}</p>
                   <Link
                     to={`/directions/${marker.id}`}
-                    onClick={() => setCurrentTruck(marker.id)}
                   >
                   Get directions
                   </Link>
@@ -135,6 +134,7 @@ class GeolocationMap extends Component {
   }
 
   handleMarkerClick(targetMarker) {
+    this.props.setCurrentTruck(targetMarker.id)
     this.setState({
       trucks: this.state.trucks.map(truck => {
         if (+truck.id === +targetMarker.id) {
@@ -168,7 +168,8 @@ const mapState = state => {
     lng: state.user.lng,
     lat: state.user.lat,
     trucks: state.trucks,
-    user: state.user
+    user: state.user,
+    currentTruck: state.currentTruck
   }
 }
 

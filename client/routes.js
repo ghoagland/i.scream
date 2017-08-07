@@ -34,7 +34,6 @@ class Routes extends Component {
                   <Route path={`/directions/:truckId`} component={Directions} />
                 </Switch>
             }
-            {/* Displays our Login component as a fallback */}
             <Route component={Landing} />
           </Switch>
         </Main>
