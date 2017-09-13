@@ -1,6 +1,6 @@
 {
   "name": "i.scream",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Find your cone",
   "engines": {
     "node": ">= 7.0.0"
